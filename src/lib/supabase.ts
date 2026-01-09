@@ -1,0 +1,20 @@
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase environment variables');
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export type NFTEntry = {
+  id: string;
+  wallet_address: string;
+  email?: string;
+  twitter_handle?: string;
+  created_at: string;
+  status: 'pending' | 'sent' | 'failed';
+  tx_hash?: string;
+};
