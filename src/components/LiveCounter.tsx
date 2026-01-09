@@ -1,21 +1,11 @@
-import { useEffect, useState } from 'react';
 import { TrendingUp } from 'lucide-react';
 
-export default function LiveCounter() {
-  const [claimed, setClaimed] = useState(20);
-  const total = 150;
+interface LiveCounterProps {
+  claimed: number;
+  total: number;
+}
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setClaimed((prev) => {
-        if (prev >= total) return total;
-        return prev + 1;
-      });
-    }, Math.random() * 3000 + 2000);
-
-    return () => clearInterval(interval);
-  }, []);
-
+export default function LiveCounter({ claimed, total }: LiveCounterProps) {
   const percentage = Math.round((claimed / total) * 100);
 
   return (

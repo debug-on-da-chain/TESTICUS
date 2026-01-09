@@ -7,7 +7,12 @@ interface Notification {
   amount: number;
 }
 
-export default function ClaimNotifications() {
+interface ClaimNotificationsProps {
+  claimed: number;
+  total: number;
+}
+
+export default function ClaimNotifications({ claimed, total }: ClaimNotificationsProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const generateWallet = () => {
@@ -20,6 +25,10 @@ export default function ClaimNotifications() {
   };
 
   useEffect(() => {
+    if (claimed >= total) {
+      return;
+    }
+
     const addNotification = () => {
       const newNotification: Notification = {
         id: Date.now(),
@@ -41,7 +50,7 @@ export default function ClaimNotifications() {
     addNotification();
 
     return () => clearInterval(interval);
-  }, []);
+  }, [claimed, total]);
 
   return (
     <div className="fixed bottom-6 right-6 z-50 space-y-3 max-w-sm">

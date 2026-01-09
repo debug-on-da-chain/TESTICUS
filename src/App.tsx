@@ -1,4 +1,5 @@
 import { Menu, Wallet } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import SubmissionForm from './components/SubmissionForm';
 import GeometricBackground from './components/GeometricBackground';
 import ClaimNotifications from './components/ClaimNotifications';
@@ -7,11 +8,24 @@ import { useWallet } from './lib/wallet';
 
 function App() {
   const { walletAddress, isConnected, isConnecting, connect } = useWallet();
+  const [claimed, setClaimed] = useState(20);
+  const total = 150;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setClaimed((prev) => {
+        if (prev >= total) return total;
+        return prev + 1;
+      });
+    }, Math.random() * 3000 + 2000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
       <GeometricBackground />
-      <ClaimNotifications />
+      <ClaimNotifications claimed={claimed} total={total} />
 
       {/* Header */}
       <header className="relative z-20 border-b border-gray-800/50">
@@ -62,7 +76,7 @@ function App() {
               <span className="text-sm font-medium">Mint is live now</span>
             </div>
 
-            <LiveCounter />
+            <LiveCounter claimed={claimed} total={total} />
           </div>
 
           {/* Right side - Form card */}
